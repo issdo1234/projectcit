@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_se_deconnecter"
+        android:icon="@drawable/annonce"
+        app:showAsAction="never"
+        android:title="Se deconnecter">
+    </item>
+    <item
+        android:id="@+id/action"
+        android:icon="@drawable/annonce"
+        app:showAsAction="never"
+        android:title="Add">
+    </item>
+    <item
+        android:id="@+id/action_recherche"
+        app:showAsAction="never"
+        android:title="Recherche">
+    </item>
+    <item
+        android:id="@+id/action_settings"
+        app:showAsAction="never"
+        android:title="Settings">
+    </item>
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_baseline"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:title="search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView">
+    </item>
+
+    <item
+        android:id="@+id/pluss"
+        android:icon="@drawable/pluss"
+        app:showAsAction="ifRoom"
+        android:title="Add">
+    </item>
+</menu>

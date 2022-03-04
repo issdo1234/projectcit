@@ -1,0 +1,2525 @@
+Index: app/src/main/res/values-night/themes.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values-night/themes.xml	(date 1644693305564)
++++ app/src/main/res/values-night/themes.xml	(date 1644693305564)
+@@ -0,0 +1,16 @@
++<resources xmlns:tools="http://schemas.android.com/tools">
++    <!-- Base application theme. -->
++    <style name="Theme.Study" parent="Theme.MaterialComponents.DayNight.NoActionBar">
++        <!-- Primary brand color. -->
++        <item name="colorPrimary">@color/purple_200</item>
++        <item name="colorPrimaryVariant">@color/purple_700</item>
++        <item name="colorOnPrimary">@color/black</item>
++        <!-- Secondary brand color. -->
++        <item name="colorSecondary">@color/teal_200</item>
++        <item name="colorSecondaryVariant">@color/teal_200</item>
++        <item name="colorOnSecondary">@color/black</item>
++        <!-- Status bar color. -->
++        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
++        <!-- Customize your theme here. -->
++    </style>
++</resources>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/vcs.xml	(date 1646380166791)
++++ .idea/vcs.xml	(date 1646380166791)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml	(date 1644690178606)
++++ app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml	(date 1644690178606)
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
++    <background android:drawable="@drawable/ic_launcher_background" />
++    <foreground android:drawable="@drawable/ic_launcher_foreground" />
++</adaptive-icon>
+\ No newline at end of file
+Index: app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml	(date 1644690177870)
++++ app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml	(date 1644690177870)
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
++    <background android:drawable="@drawable/ic_launcher_background" />
++    <foreground android:drawable="@drawable/ic_launcher_foreground" />
++</adaptive-icon>
+\ No newline at end of file
+Index: app/src/main/java/com/example/study/AjouterAnnonceActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/study/AjouterAnnonceActivity.java	(date 1646338974500)
++++ app/src/main/java/com/example/study/AjouterAnnonceActivity.java	(date 1646338974500)
+@@ -0,0 +1,95 @@
++package com.example.study;
++
++import android.content.Intent;
++import android.os.Bundle;
++import android.util.Log;
++import android.view.Menu;
++import android.view.MenuItem;
++import android.widget.Button;
++import androidx.appcompat.app.AppCompatActivity;
++import android.widget.Toast;
++import com.google.gson.Gson;
++import com.google.gson.GsonBuilder;
++import retrofit2.Call;
++import retrofit2.Callback;
++import retrofit2.Response;
++import retrofit2.Retrofit;
++import retrofit2.converter.gson.GsonConverterFactory;
++import androidx.appcompat.widget.Toolbar;
++
++
++public class AjouterAnnonceActivity extends AppCompatActivity {
++    private Toolbar toolbar;
++    Button btnValider ;
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_ajouter_annonce);
++
++        toolbar = findViewById(R.id.maintoolbar);
++        btnValider = findViewById(R.id.BtnValider);
++
++
++        setSupportActionBar(toolbar);
++        btnValider.setOnClickListener(view -> {
++            Gson gson = new GsonBuilder()
++                    .setLenient()
++                    .create();
++            Retrofit retrofit = new Retrofit.Builder()
++                    .baseUrl("https://stady-24836-default-rtdb.firebaseio.com/")
++                    .addConverterFactory(GsonConverterFactory.create(gson))
++                    .build();
++            PostGetInterfaceJson postGetInterfaceJson = retrofit.create(PostGetInterfaceJson.class);
++
++            //POST method
++            Call<Annonce> call1 = postGetInterfaceJson.setAnnonce("users", new Annonce("issam","yassine",
++                    "iss@gmail.com","preparation examen",
++                    "kenitra","ensa KENITRA",R.drawable.avatar1,
++                    200,1,2,06666666,"34"));
++            call1.enqueue(new Callback<Annonce>() {
++                @Override
++                public void onResponse(Call<Annonce> call, Response<Annonce> response) {
++                    Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_SHORT).show();
++                }
++
++                @Override
++                public void onFailure(Call<Annonce> call, Throwable t) {
++                    Log.d("sam", "fail");
++                    Toast.makeText(getApplicationContext(),"Fail",Toast.LENGTH_SHORT).show();
++                }
++            });
++        });
++
++//        Spinner spinner = (Spinner) findViewById(R.id.spinner);
++//        // Create an ArrayAdapter using the string array and a default spinner layout
++//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
++//                R.array.planets_array, android.R.layout.simple_spinner_item);
++//        // Specify the layout to use when the list of choices appears
++//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
++//        // Apply the adapter to the spinner
++//        spinner.setAdapter(adapter);
++}
++    @Override
++    public boolean onCreateOptionsMenu(Menu menu) {
++        getMenuInflater().inflate(R.menu.menu_home,menu);
++
++        return super.onCreateOptionsMenu(menu);
++    }
++
++    @Override
++    public boolean onOptionsItemSelected(MenuItem item) {
++        // Handle item selection
++        switch (item.getItemId()) {
++            case R.id.action:
++                Intent intent = new Intent(getApplicationContext(),AjouterAnnonceActivity.class);
++                startActivity(intent);
++                return true;
++            case R.id.action_settings:
++                // startSettings();
++                return true;
++
++            default:
++                return super.onOptionsItemSelected(item);
++        }
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/study/ListAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/study/ListAdapter.java	(date 1646346408939)
++++ app/src/main/java/com/example/study/ListAdapter.java	(date 1646346408939)
+@@ -0,0 +1,59 @@
++package com.example.study;
++
++
++import android.content.Context;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.ArrayAdapter;
++import android.widget.EditText;
++import android.widget.ImageView;
++import android.widget.TextView;
++
++
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
++
++import com.google.gson.Gson;
++import com.google.gson.GsonBuilder;
++
++import java.util.ArrayList;
++
++import retrofit2.Call;
++import retrofit2.Callback;
++import retrofit2.Response;
++import retrofit2.Retrofit;
++import retrofit2.converter.gson.GsonConverterFactory;
++
++public class ListAdapter extends ArrayAdapter<Annonce> {
++    public ListAdapter(Context context, ArrayList<Annonce> annonceArrayList) {
++        super(context, R.layout.item_annonce,annonceArrayList);
++    }
++
++
++    @NonNull
++    @Override
++    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
++        Annonce annonce = getItem(position);
++
++        if (convertView == null){
++            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_annonce,parent,false);
++        }
++
++        ImageView imageView = convertView.findViewById(R.id.trans_image);
++        TextView typeTrans = convertView.findViewById(R.id.typeTrans);
++        TextView tauTrans = convertView.findViewById(R.id.tauxTrans);
++        TextView dateTrans = convertView.findViewById(R.id.dateTrans);
++        TextView boujam3aAge = convertView.findViewById(R.id.boujem3aAge);
++
++
++        imageView.setImageResource(annonce.getImageId());
++        typeTrans.setText(annonce.getTitreAnnonce());
++        tauTrans.setText(annonce.getFirstName());
++        dateTrans.setText(annonce.getDateAnnonce());
++        boujam3aAge.setText(annonce.getPrix());
++        return convertView;
++    }
++}
++
++
+Index: app/src/main/java/com/example/study/LoginActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/study/LoginActivity.java	(date 1644695989686)
++++ app/src/main/java/com/example/study/LoginActivity.java	(date 1644695989686)
+@@ -0,0 +1,35 @@
++package com.example.study;
++
++import androidx.appcompat.app.AppCompatActivity;
++
++import android.content.Intent;
++import android.os.Bundle;
++import android.widget.Button;
++import android.widget.TextView;
++
++public class LoginActivity extends AppCompatActivity {
++
++    Button btn_login;
++//    TextView txtsignup;
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_login);
++
++        btn_login = findViewById(R.id.btn_login);
++//        txtsignup = findViewById(R.id.txtsignup);
++
++
++        btn_login.setOnClickListener(view -> {
++            Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
++            startActivity(intent);
++        });
++//        txtsignup.setOnClickListener(view -> {
++//            Intent intent = new Intent(getApplicationContext(),SignUp.class);
++//            startActivity(intent);
++//        });
++    }
++
++
++
++}
+Index: app/src/main/java/com/example/study/Annonce.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/study/Annonce.java	(date 1646338954770)
++++ app/src/main/java/com/example/study/Annonce.java	(date 1646338954770)
+@@ -0,0 +1,135 @@
++package com.example.study;
++
++public class Annonce {
++    private String firstName, lastName, email,typeOffre,ville,titreAnnonce,dateAnnonce ;
++    private int imageId,prix,id,userId,tel;
++
++    public Annonce(String firstName, String lastName, String email, String typeOffre,
++                   String ville, String titreAnnonce,
++                   int imageId, int prix, int id, int userId,
++                   int tel, String dateAnnonce) {
++        this.firstName = firstName;
++        this.lastName = lastName;
++        this.email = email;
++        this.typeOffre = typeOffre;
++        this.ville = ville;
++        this.titreAnnonce = titreAnnonce;
++        this.imageId = imageId;
++        this.prix = prix;
++        this.id = id;
++        this.userId = userId;
++        this.tel = tel;
++        this.dateAnnonce = dateAnnonce;
++    }
++
++    public Annonce(String firstName, String lastName, int imageId, int prix, String dateAnnonce) {
++        this.firstName = firstName;
++        this.lastName = lastName;
++        this.imageId = imageId;
++        this.prix = prix;
++        this.dateAnnonce = dateAnnonce;
++    }
++
++    public String getFirstName() {
++        return firstName;
++    }
++
++    public void setFirstName(String firstName) {
++        this.firstName = firstName;
++    }
++
++    public String getLastName() {
++        return lastName;
++    }
++
++    public void setLastName(String lastName) {
++        this.lastName = lastName;
++    }
++
++    public String getEmail() {
++        return email;
++    }
++
++    public void setEmail(String email) {
++        this.email = email;
++    }
++
++    public String getTypeOffre() {
++        return typeOffre;
++    }
++
++    public void setTypeOffre(String typeOffre) {
++        this.typeOffre = typeOffre;
++    }
++
++    public String getVille() {
++        return ville;
++    }
++
++    public void setVille(String ville) {
++        this.ville = ville;
++    }
++
++    public String getTitreAnnonce() {
++        return titreAnnonce;
++    }
++
++    public void setTitreAnnonce(String titreAnnonce) {
++        this.titreAnnonce = titreAnnonce;
++    }
++
++    public int getImageId() {
++        return imageId;
++    }
++
++    public void setImageId(int imageId) {
++        this.imageId = imageId;
++    }
++
++    public int getPrix() {
++        return prix;
++    }
++
++    public void setPrix(int prix) {
++        this.prix = prix;
++    }
++
++    public int getId() {
++        return id;
++    }
++
++    public void setId(int id) {
++        this.id = id;
++    }
++
++    public int getUserId() {
++        return userId;
++    }
++
++    public void setUserId(int userId) {
++        this.userId = userId;
++    }
++
++    public int getTel() {
++        return tel;
++    }
++
++    public void setTel(int tel) {
++        this.tel = tel;
++    }
++
++    public String getDateAnnonce() {
++        return dateAnnonce;
++    }
++
++    public void setDateAnnonce(String dateAnnonce) {
++        this.dateAnnonce = dateAnnonce;
++    }
++}
++
++
++
++
++
++
++
+Index: app/src/main/java/com/example/study/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/study/MainActivity.java	(date 1645200296072)
++++ app/src/main/java/com/example/study/MainActivity.java	(date 1645200296072)
+@@ -0,0 +1,103 @@
++package com.example.study;
++
++import androidx.appcompat.app.AppCompatActivity;
++import androidx.appcompat.widget.Toolbar;
++
++import android.content.Intent;
++import android.os.Bundle;
++import android.view.Menu;
++import android.view.MenuItem;
++
++import com.example.study.databinding.ActivityHomeBinding;
++import com.example.study.databinding.ActivityMainBinding;
++
++public class MainActivity extends AppCompatActivity {
++
++    ActivityMainBinding binding;
++    private Toolbar toolbar;
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_main);
++
++
++        binding = ActivityMainBinding.inflate(getLayoutInflater());
++        setContentView(binding.getRoot());
++        toolbar=findViewById(R.id.maintoolbar);
++        setSupportActionBar(toolbar);
++        Intent intent = this.getIntent();
++        if(intent != null){
++
++
++            //If your extra data is represented as strings,
++            // then you can use intent.getStringExtra(String name) method. In this case:
++
++            String typeTrans = intent.getStringExtra("typeTrans");
++            String ref = intent.getStringExtra("ref");
++            String tauxTrans = intent.getStringExtra("tauxTrans");
++            String dateTrans = intent.getStringExtra("dateTrans");
++            String autres = intent.getStringExtra("autres");
++            int imageId = intent.getIntExtra("imageId",R.drawable.avatar1);
++
++            //apres avoir affecter les valeurs, o pose chaque valeur dans son emplacement
++            // sur le fichier activity_transaction_page.xml
++
++            binding.ref.setText(ref);
++            binding.typeTrans.setText(typeTrans);
++            binding.tauxTrans.setText(tauxTrans);
++            binding.dateTrans.setText(dateTrans);
++            binding.autres.setText(autres);
++            binding.imageId.setImageResource(imageId);
++
++        }
++    }
++    @Override
++    public boolean onCreateOptionsMenu(Menu menu) {
++        getMenuInflater().inflate(R.menu.menu_home,menu);
++
++        return super.onCreateOptionsMenu(menu);
++    }
++
++    @Override
++    public boolean onOptionsItemSelected(MenuItem item) {
++        // Handle item selection
++        switch (item.getItemId()) {
++            case R.id.action:
++                Intent intent = new Intent(getApplicationContext(),AjouterAnnonceActivity.class);
++                startActivity(intent);
++                return true;
++            case R.id.action_settings:
++                // startSettings();
++                return true;
++//            case R.id.search:
++//            MenuItem.OnActionExpandListener onActionExpandListener = new MenuItem.OnActionExpandListener() {
++//                @Override
++//                public boolean onMenuItemActionExpand(MenuItem menuItem) {
++//                    Toast.makeText(HomeActivity.this,"Search is expanded",Toast.LENGTH_SHORT).show();
++//                    return true;
++//                }
++//
++//                @Override
++//                public boolean onMenuItemActionCollapse(MenuItem menuItem) {
++//                    Toast.makeText(HomeActivity.this,"Search is Collapsed",Toast.LENGTH_SHORT).show();
++//                    return true;
++//                }
++//            };
++//            menu.findItem(R.id.search).setOnActionExpandListener(onActionExpandListener);
++//            SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
++//            searchView.setQueryHint("Search Data here...");
++//                return true;
++
++            default:
++                return super.onOptionsItemSelected(item);
++        }
++    }
++}
++
++
++        //getIntent().getExtras() is used to get values from intent that are stored in bundle
++        //Intent class is used to switch between activities.
++        //First, get the intent which has started your activity using the getIntent() method:
++
++
++
+Index: app/src/main/java/com/example/study/HomeActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/study/HomeActivity.java	(date 1646378710147)
++++ app/src/main/java/com/example/study/HomeActivity.java	(date 1646378710147)
+@@ -0,0 +1,168 @@
++package com.example.study;
++
++
++import android.app.Activity;
++import android.content.Intent;
++import android.os.Bundle;
++import android.view.Menu;
++import android.view.MenuItem;
++import android.view.View;
++import android.widget.AdapterView;
++import android.widget.EditText;
++import android.widget.ImageView;
++import android.widget.TextView;
++import android.widget.Toast;
++
++
++import androidx.appcompat.widget.Toolbar;
++import androidx.appcompat.app.AppCompatActivity;
++import com.example.study.databinding.ActivityHomeBinding;
++import com.google.gson.Gson;
++import com.google.gson.GsonBuilder;
++//import com.google.firebase.database.DatabaseReference;
++//import com.google.firebase.database.FirebaseDatabase;
++
++import java.util.ArrayList;
++
++import retrofit2.Call;
++import retrofit2.Callback;
++import retrofit2.Response;
++import retrofit2.Retrofit;
++import retrofit2.converter.gson.GsonConverterFactory;
++
++public class HomeActivity extends AppCompatActivity {
++
++    ActivityHomeBinding binding;
++    private Toolbar toolbar;
++    EditText test;
++    TextView firstName;
++
++
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_home);
++        // Write a message to the database
++//        FirebaseDatabase datab = FirebaseDatabase.getInstance();
++//        DatabaseReference myRef = datab.getReference("mess");
++//        myRef.setValue("Hello, World!");
++        binding = ActivityHomeBinding.inflate(getLayoutInflater());
++        setContentView(binding.getRoot());
++
++        toolbar=findViewById(R.id.maintoolbar);
++        test=findViewById(R.id.test);
++        ImageView imageView = findViewById(R.id.trans_image);
++        TextView typeTrans = findViewById(R.id.typeTrans);
++        firstName = findViewById(R.id.tauxTrans);
++        TextView dateTrans = findViewById(R.id.dateTrans);
++        TextView boujam3aAge = findViewById(R.id.boujem3aAge);
++        setSupportActionBar(toolbar);
++
++            Gson gson = new GsonBuilder()
++                    .setLenient()
++                    .create();
++            Retrofit retrofit = new Retrofit.Builder()
++                    .baseUrl("https://stady-24836-default-rtdb.firebaseio.com/")
++                    .addConverterFactory(GsonConverterFactory.create(gson))
++                    .build();
++
++        PostGetInterfaceJson postGetInterfaceJson = retrofit.create(PostGetInterfaceJson.class);
++        Call<Annonce> call=postGetInterfaceJson.getAnnonce();
++        ArrayList<Annonce> annonceArrayList = new ArrayList<>();
++        call.enqueue(new Callback<Annonce>() {
++            @Override
++            public void onResponse(Call<Annonce> call, Response<Annonce> response) {
++                if (annonceArrayList != null) this.updateUIWithListOfAnnonce(annonceArrayList);
++            }
++
++            private void updateUIWithListOfAnnonce(ArrayList<Annonce> annonceArrayList) {
++
++            for (Annonce annonce : annonceArrayList){
++                    test.setText(annonce.getFirstName());
++                    firstName.setText(annonce.getFirstName());
++                }
++            }
++
++            @Override
++            public void onFailure(Call<Annonce> call, Throwable t) {
++                this.updateUIWhenStopingHTTPRequest("Error !");
++            }
++
++            private void updateUIWhenStopingHTTPRequest(String message) {
++                Toast.makeText(HomeActivity.this,message,Toast.LENGTH_SHORT).show();
++            }
++        });
++
++       
++        
++       
++
++        ListAdapter listAdapter = new ListAdapter(HomeActivity.this,annonceArrayList);
++        binding.listview.setAdapter(listAdapter);
++        binding.listview.setClickable(true);
++//        binding.listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
++//            @Override
++//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
++//                Intent i = new Intent(HomeActivity.this, MainActivity.class);
++//
++//                //sometimes we need to send data from one activity to another.
++//                // So, at this particular moment we need to set some values to intent
++//                // that can be transferred to destination activity.
++//
++//                i.putExtra("firstName", firstName[position]);
++//                i.putExtra("lastNam", lastName[position]);
++//                i.putExtra("Prix", prix[position]);
++//                i.putExtra("date", dateAnnonce[position]);
++//                i.putExtra("imageId", imageId[position]);
++//
++//                startActivity(i);
++//            }
++//        });
++
++
++}
++
++
++    @Override
++    public boolean onCreateOptionsMenu(Menu menu) {
++        getMenuInflater().inflate(R.menu.menu_home,menu);
++        return super.onCreateOptionsMenu(menu);
++    }
++
++    @Override
++    public boolean onOptionsItemSelected(MenuItem item) {
++        // Handle item selection
++        switch (item.getItemId()) {
++            case R.id.action:
++                    Intent intent = new Intent(getApplicationContext(),AjouterAnnonceActivity.class);
++                    startActivity(intent);
++                return true;
++            case R.id.action_settings:
++                // startSettings();
++                return true;
++//            case R.id.search:
++//            MenuItem.OnActionExpandListener onActionExpandListener = new MenuItem.OnActionExpandListener() {
++//                @Override
++//                public boolean onMenuItemActionExpand(MenuItem menuItem) {
++//                    Toast.makeText(HomeActivity.this,"Search is expanded",Toast.LENGTH_SHORT).show();
++//                    return true;
++//                }
++//
++//                @Override
++//                public boolean onMenuItemActionCollapse(MenuItem menuItem) {
++//                    Toast.makeText(HomeActivity.this,"Search is Collapsed",Toast.LENGTH_SHORT).show();
++//                    return true;
++//                }
++//            };
++//            menu.findItem(R.id.search).setOnActionExpandListener(onActionExpandListener);
++//            SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
++//            searchView.setQueryHint("Search Data here...");
++//                return true;
++            default:
++                return super.onOptionsItemSelected(item);
++        }
++    }
++
++}
++
+Index: app/src/test/java/com/example/study/ExampleUnitTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/test/java/com/example/study/ExampleUnitTest.java	(date 1644690177841)
++++ app/src/test/java/com/example/study/ExampleUnitTest.java	(date 1644690177841)
+@@ -0,0 +1,17 @@
++package com.example.study;
++
++import org.junit.Test;
++
++import static org.junit.Assert.*;
++
++/**
++ * Example local unit test, which will execute on the development machine (host).
++ *
++ * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
++ */
++public class ExampleUnitTest {
++    @Test
++    public void addition_isCorrect() {
++        assertEquals(4, 2 + 2);
++    }
++}
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(date 1646339301848)
++++ app/src/main/AndroidManifest.xml	(date 1646339301848)
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.example.study">
++
++    <application
++        android:allowBackup="true"
++        android:icon="@mipmap/ic_launcher"
++
++        android:label="@string/app_name"
++        android:roundIcon="@mipmap/ic_launcher_round"
++        android:supportsRtl="true"
++        android:theme="@style/Theme.Study">
++        <activity android:name=".AjouterAnnonceActivity" />
++        <activity android:name=".HomeActivity" />
++        <activity android:name=".LoginActivity">
++            <intent-filter>
++                <action android:name="android.intent.action.MAIN" />
++
++                <category android:name="android.intent.category.LAUNCHER" />
++            </intent-filter>
++        </activity>
++        <activity android:name=".MainActivity" />
++    </application>
++
++</manifest>
+\ No newline at end of file
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- build.gradle	(date 1645209452115)
++++ build.gradle	(date 1645209452115)
+@@ -0,0 +1,25 @@
++// Top-level build file where you can add configuration options common to all sub-projects/modules.
++buildscript {
++    repositories {
++        google()
++        jcenter()
++    }
++    dependencies {
++        classpath "com.android.tools.build:gradle:4.1.2"
++        classpath 'com.google.gms:google-services:4.3.10'
++
++        // NOTE: Do not place your application dependencies here; they belong
++        // in the individual module build.gradle files
++    }
++}
++
++allprojects {
++    repositories {
++        google()
++        jcenter()
++    }
++}
++
++task clean(type: Delete) {
++    delete rootProject.buildDir
++}
+\ No newline at end of file
+Index: app/src/androidTest/java/com/example/study/ExampleInstrumentedTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/androidTest/java/com/example/study/ExampleInstrumentedTest.java	(date 1644690177784)
++++ app/src/androidTest/java/com/example/study/ExampleInstrumentedTest.java	(date 1644690177784)
+@@ -0,0 +1,26 @@
++package com.example.study;
++
++import android.content.Context;
++
++import androidx.test.platform.app.InstrumentationRegistry;
++import androidx.test.ext.junit.runners.AndroidJUnit4;
++
++import org.junit.Test;
++import org.junit.runner.RunWith;
++
++import static org.junit.Assert.*;
++
++/**
++ * Instrumented test, which will execute on an Android device.
++ *
++ * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
++ */
++@RunWith(AndroidJUnit4.class)
++public class ExampleInstrumentedTest {
++    @Test
++    public void useAppContext() {
++        // Context of the app under test.
++        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
++        assertEquals("com.example.study", appContext.getPackageName());
++    }
++}
+\ No newline at end of file
+Index: app/src/main/res/menu/menu_home.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/menu_home.xml	(date 1645199331989)
++++ app/src/main/res/menu/menu_home.xml	(date 1645199331989)
+@@ -0,0 +1,41 @@
++<?xml version="1.0" encoding="utf-8"?>
++<menu xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto">
++    <item
++        android:id="@+id/action_se_deconnecter"
++        android:icon="@drawable/annonce"
++        app:showAsAction="never"
++        android:title="Se deconnecter">
++    </item>
++    <item
++        android:id="@+id/action"
++        android:icon="@drawable/annonce"
++        app:showAsAction="never"
++        android:title="Add">
++    </item>
++    <item
++        android:id="@+id/action_recherche"
++        app:showAsAction="never"
++        android:title="Recherche">
++    </item>
++    <item
++        android:id="@+id/action_settings"
++        app:showAsAction="never"
++        android:title="Settings">
++    </item>
++
++    <item
++        android:id="@+id/search"
++        android:icon="@drawable/ic_baseline"
++        app:showAsAction="ifRoom|collapseActionView"
++        android:title="search"
++        app:actionViewClass="androidx.appcompat.widget.SearchView">
++    </item>
++
++    <item
++        android:id="@+id/pluss"
++        android:icon="@drawable/pluss"
++        app:showAsAction="ifRoom"
++        android:title="Add">
++    </item>
++</menu>
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_login.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_login.xml	(date 1645203481200)
++++ app/src/main/res/layout/activity_login.xml	(date 1645203481200)
+@@ -0,0 +1,122 @@
++<?xml version="1.0" encoding="utf-8"?>
++<ScrollView
++    xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:layout_width="match_parent"
++    android:orientation="vertical"
++    android:layout_height="wrap_content">
++
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:orientation="vertical">
++
++    <ImageView
++        android:layout_width="wrap_content"
++        android:layout_height="100dp"
++        android:layout_gravity="center_horizontal"
++        android:src="@drawable/studinglogo"/>
++<androidx.cardview.widget.CardView
++    android:layout_width="match_parent"
++    android:layout_height="wrap_content"
++    app:cardElevation="4dp"
++    app:cardCornerRadius="20dp"
++    app:cardBackgroundColor="?android:attr/colorBackgroundCacheHint"
++    app:cardUseCompatPadding="true"
++    >
++    <LinearLayout
++
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++
++        android:orientation="vertical"
++
++        android:padding="20dp">
++
++        <EditText
++
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:hint="Entrer votre Nom"
++            />
++        <EditText
++            android:layout_marginTop="15dp"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:hint="Entrer votre Prenom"
++            />
++        <Switch
++            android:layout_marginTop="15dp"
++            android:id="@+id/switch1"
++            android:textSize="16dp"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:text="Se souvenir de moi" />
++
++            <com.google.android.material.button.MaterialButton
++                android:layout_marginTop="20dp"
++                android:id="@+id/btn_login"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="login"
++                android:textColor="@color/black"
++                android:layout_gravity="center"
++                app:backgroundTint="#8B88FF66"/>
++    </LinearLayout>
++</androidx.cardview.widget.CardView>
++    <TextView
++        android:layout_marginTop="10dp"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="Mot de passe oublie ?"
++        android:layout_gravity="center_horizontal"
++        android:textSize="20sp"
++        android:textColor="@color/purple_700"/>
++    <TextView
++        android:layout_marginTop="10dp"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="Inscription"
++        android:layout_gravity="center_horizontal"
++        android:textSize="20sp"
++        android:textColor="#5C6BC0"/>
++
++    <LinearLayout
++        android:layout_marginTop="10dp"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_gravity="center_horizontal"
++        android:orientation="horizontal">
++
++        <ImageView
++            android:layout_width="30dp"
++            android:layout_height="30dp"
++            android:layout_gravity="center_horizontal"
++            android:layout_margin="10dp"
++            android:src="@drawable/facebook" />
++
++        <ImageView
++            android:layout_width="30dp"
++            android:layout_height="30dp"
++            android:layout_gravity="center_horizontal"
++            android:layout_margin="10dp"
++            android:src="@drawable/gmail" />
++
++        <ImageView
++            android:layout_width="30dp"
++            android:layout_height="30dp"
++            android:layout_gravity="center_horizontal"
++            android:layout_margin="10dp"
++            android:src="@drawable/linkedin" />
++
++    </LinearLayout>
++    <TextView
++
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:text="Continue sans inscription"
++        android:layout_gravity="center_horizontal"
++        android:textSize="20sp"
++        android:textColor="#29B6F6"/>
++    </LinearLayout>
++</ScrollView>
+\ No newline at end of file
+Index: settings.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- settings.gradle	(date 1644690177347)
++++ settings.gradle	(date 1644690177347)
+@@ -0,0 +1,2 @@
++include ':app'
++rootProject.name = "Study"
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_home.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_home.xml	(date 1646344049767)
++++ app/src/main/res/layout/activity_home.xml	(date 1646344049767)
+@@ -0,0 +1,24 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:orientation="vertical"
++    android:background="@drawable/ciel"
++    tools:context=".HomeActivity">
++    <androidx.appcompat.widget.Toolbar
++        android:id="@+id/maintoolbar"
++        android:layout_width="match_parent"
++        android:layout_height="56dp"
++        />
++    <EditText
++        android:id="@+id/test"
++        android:layout_width="wrap_content"
++        android:layout_height="49dp"/>
++    <ListView
++        android:id="@+id/listview"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        tools:listitem="@layout/item_annonce"
++        />
++</LinearLayout>
+\ No newline at end of file
+Index: gradle.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>windows-1252
+===================================================================
+--- gradle.properties	(date 1644690176359)
++++ gradle.properties	(date 1644690176359)
+@@ -0,0 +1,19 @@
++# Project-wide Gradle settings.
++# IDE (e.g. Android Studio) users:
++# Gradle settings configured through the IDE *will override*
++# any settings specified in this file.
++# For more details on how to configure your build environment visit
++# http://www.gradle.org/docs/current/userguide/build_environment.html
++# Specifies the JVM arguments used for the daemon process.
++# The setting is particularly useful for tweaking memory settings.
++org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
++# When configured, Gradle will run in incubating parallel mode.
++# This option should only be used with decoupled projects. More details, visit
++# http://www.gradle.org/docs/current/userguide/multi_project_builds.html#sec:decoupled_projects
++# org.gradle.parallel=true
++# AndroidX package structure to make it clearer which packages are bundled with the
++# Android operating system, and which are packaged with your app"s APK
++# https://developer.android.com/topic/libraries/support-library/androidx-rn
++android.useAndroidX=true
++# Automatically convert third-party libraries to use AndroidX
++android.enableJetifier=true
+\ No newline at end of file
+Index: gradlew
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- gradlew	(date 1644690176022)
++++ gradlew	(date 1644690176022)
+@@ -0,0 +1,172 @@
++#!/usr/bin/env sh
++
++##############################################################################
++##
++##  Gradle start up script for UN*X
++##
++##############################################################################
++
++# Attempt to set APP_HOME
++# Resolve links: $0 may be a link
++PRG="$0"
++# Need this for relative symlinks.
++while [ -h "$PRG" ] ; do
++    ls=`ls -ld "$PRG"`
++    link=`expr "$ls" : '.*-> \(.*\)$'`
++    if expr "$link" : '/.*' > /dev/null; then
++        PRG="$link"
++    else
++        PRG=`dirname "$PRG"`"/$link"
++    fi
++done
++SAVED="`pwd`"
++cd "`dirname \"$PRG\"`/" >/dev/null
++APP_HOME="`pwd -P`"
++cd "$SAVED" >/dev/null
++
++APP_NAME="Gradle"
++APP_BASE_NAME=`basename "$0"`
++
++# Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
++DEFAULT_JVM_OPTS=""
++
++# Use the maximum available, or set MAX_FD != -1 to use that value.
++MAX_FD="maximum"
++
++warn () {
++    echo "$*"
++}
++
++die () {
++    echo
++    echo "$*"
++    echo
++    exit 1
++}
++
++# OS specific support (must be 'true' or 'false').
++cygwin=false
++msys=false
++darwin=false
++nonstop=false
++case "`uname`" in
++  CYGWIN* )
++    cygwin=true
++    ;;
++  Darwin* )
++    darwin=true
++    ;;
++  MINGW* )
++    msys=true
++    ;;
++  NONSTOP* )
++    nonstop=true
++    ;;
++esac
++
++CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
++
++# Determine the Java command to use to start the JVM.
++if [ -n "$JAVA_HOME" ] ; then
++    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
++        # IBM's JDK on AIX uses strange locations for the executables
++        JAVACMD="$JAVA_HOME/jre/sh/java"
++    else
++        JAVACMD="$JAVA_HOME/bin/java"
++    fi
++    if [ ! -x "$JAVACMD" ] ; then
++        die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME
++
++Please set the JAVA_HOME variable in your environment to match the
++location of your Java installation."
++    fi
++else
++    JAVACMD="java"
++    which java >/dev/null 2>&1 || die "ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
++
++Please set the JAVA_HOME variable in your environment to match the
++location of your Java installation."
++fi
++
++# Increase the maximum file descriptors if we can.
++if [ "$cygwin" = "false" -a "$darwin" = "false" -a "$nonstop" = "false" ] ; then
++    MAX_FD_LIMIT=`ulimit -H -n`
++    if [ $? -eq 0 ] ; then
++        if [ "$MAX_FD" = "maximum" -o "$MAX_FD" = "max" ] ; then
++            MAX_FD="$MAX_FD_LIMIT"
++        fi
++        ulimit -n $MAX_FD
++        if [ $? -ne 0 ] ; then
++            warn "Could not set maximum file descriptor limit: $MAX_FD"
++        fi
++    else
++        warn "Could not query maximum file descriptor limit: $MAX_FD_LIMIT"
++    fi
++fi
++
++# For Darwin, add options to specify how the application appears in the dock
++if $darwin; then
++    GRADLE_OPTS="$GRADLE_OPTS \"-Xdock:name=$APP_NAME\" \"-Xdock:icon=$APP_HOME/media/gradle.icns\""
++fi
++
++# For Cygwin, switch paths to Windows format before running java
++if $cygwin ; then
++    APP_HOME=`cygpath --path --mixed "$APP_HOME"`
++    CLASSPATH=`cygpath --path --mixed "$CLASSPATH"`
++    JAVACMD=`cygpath --unix "$JAVACMD"`
++
++    # We build the pattern for arguments to be converted via cygpath
++    ROOTDIRSRAW=`find -L / -maxdepth 1 -mindepth 1 -type d 2>/dev/null`
++    SEP=""
++    for dir in $ROOTDIRSRAW ; do
++        ROOTDIRS="$ROOTDIRS$SEP$dir"
++        SEP="|"
++    done
++    OURCYGPATTERN="(^($ROOTDIRS))"
++    # Add a user-defined pattern to the cygpath arguments
++    if [ "$GRADLE_CYGPATTERN" != "" ] ; then
++        OURCYGPATTERN="$OURCYGPATTERN|($GRADLE_CYGPATTERN)"
++    fi
++    # Now convert the arguments - kludge to limit ourselves to /bin/sh
++    i=0
++    for arg in "$@" ; do
++        CHECK=`echo "$arg"|egrep -c "$OURCYGPATTERN" -`
++        CHECK2=`echo "$arg"|egrep -c "^-"`                                 ### Determine if an option
++
++        if [ $CHECK -ne 0 ] && [ $CHECK2 -eq 0 ] ; then                    ### Added a condition
++            eval `echo args$i`=`cygpath --path --ignore --mixed "$arg"`
++        else
++            eval `echo args$i`="\"$arg\""
++        fi
++        i=$((i+1))
++    done
++    case $i in
++        (0) set -- ;;
++        (1) set -- "$args0" ;;
++        (2) set -- "$args0" "$args1" ;;
++        (3) set -- "$args0" "$args1" "$args2" ;;
++        (4) set -- "$args0" "$args1" "$args2" "$args3" ;;
++        (5) set -- "$args0" "$args1" "$args2" "$args3" "$args4" ;;
++        (6) set -- "$args0" "$args1" "$args2" "$args3" "$args4" "$args5" ;;
++        (7) set -- "$args0" "$args1" "$args2" "$args3" "$args4" "$args5" "$args6" ;;
++        (8) set -- "$args0" "$args1" "$args2" "$args3" "$args4" "$args5" "$args6" "$args7" ;;
++        (9) set -- "$args0" "$args1" "$args2" "$args3" "$args4" "$args5" "$args6" "$args7" "$args8" ;;
++    esac
++fi
++
++# Escape application args
++save () {
++    for i do printf %s\\n "$i" | sed "s/'/'\\\\''/g;1s/^/'/;\$s/\$/' \\\\/" ; done
++    echo " "
++}
++APP_ARGS=$(save "$@")
++
++# Collect all arguments for the java command, following the shell quoting and substitution rules
++eval set -- $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS "\"-Dorg.gradle.appname=$APP_BASE_NAME\"" -classpath "\"$CLASSPATH\"" org.gradle.wrapper.GradleWrapperMain "$APP_ARGS"
++
++# by default we should be in the correct project dir, but when run from Finder on Mac, the cwd is wrong
++if [ "$(uname)" = "Darwin" ] && [ "$HOME" = "$PWD" ]; then
++  cd "$(dirname "$0")"
++fi
++
++exec "$JAVACMD" "$@"
+Index: app/src/main/res/layout/item_annonce.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/item_annonce.xml	(date 1645205432926)
++++ app/src/main/res/layout/item_annonce.xml	(date 1645205432926)
+@@ -0,0 +1,111 @@
++<?xml version="1.0" encoding="utf-8"?>
++<androidx.cardview.widget.CardView
++    xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:layout_width="match_parent"
++    android:layout_height="wrap_content"
++    app:cardElevation="2dp"
++    app:cardCornerRadius="8dp"
++    android:backgroundTint="#4AF8DA8F"
++    app:cardUseCompatPadding="true"
++    android:layout_marginBottom="5dp"
++    android:layout_margin="16dp"
++    >
++
++    <RelativeLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:layout_marginTop="16dp"
++        >
++
++
++        <de.hdodenhof.circleimageview.CircleImageView
++            android:id="@+id/trans_image"
++            android:layout_width="60dp"
++            android:layout_height="60dp"
++            android:src="@drawable/facebook"
++            app:civ_border_width="2dp"
++            android:paddingStart="5dp"
++            android:paddingEnd="5dp"
++            app:civ_border_color="#D34DFA02"/>
++
++        <TextView
++            android:id="@+id/typeTrans"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginStart="80dp"
++            android:layout_marginTop="15dp"
++            android:text="Facture Internet"
++            android:textSize="20dp"
++            android:textStyle="bold" />
++
++        <LinearLayout
++            android:id="@+id/Ll"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:orientation="vertical"
++            android:layout_alignParentRight="true">
++
++            <TextView
++                android:id="@+id/tauxTrans"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:layout_gravity="center_horizontal"
++                android:textSize="16dp"
++                android:textStyle="bold"
++                android:text="299,00"/>
++
++            <TextView
++                android:id="@+id/dateTrans"
++                android:text="09/10/18"
++                android:textStyle="bold"
++                android:layout_marginTop="10dp"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:textColor="@color/black"
++                android:layout_marginEnd="10dp"
++                android:layout_marginStart="10dp"
++                android:textSize="16dp"/>
++            <TextView
++                android:id="@+id/Age"
++                android:text="09/10/18"
++                android:layout_below="@+id/Ll"
++                android:textStyle="bold"
++                android:layout_marginTop="10dp"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:textColor="@color/black"
++                android:layout_marginEnd="10dp"
++                android:layout_marginStart="10dp"
++                android:textSize="16dp"/>
++
++        </LinearLayout>
++        <RelativeLayout
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:padding="5dp"
++            android:layout_below="@+id/Ll">
++        <TextView
++            android:id="@+id/boujem3aAge"
++            android:text="HEURE"
++            android:layout_alignParentLeft="true"
++            android:textStyle="bold"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:textColor="@color/black"
++            android:textSize="16dp"/>
++            <de.hdodenhof.circleimageview.CircleImageView
++                android:id="@+id/more"
++                android:layout_width="30dp"
++                android:layout_height="30dp"
++                android:src="@drawable/plus"
++                app:civ_border_width="1dp"
++                android:layout_alignParentRight="true"
++                app:civ_border_color="#AFB42B"/>
++        </RelativeLayout>
++
++    </RelativeLayout>
++
++
++</androidx.cardview.widget.CardView>
++
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(date 1645205158345)
++++ app/src/main/res/layout/activity_main.xml	(date 1645205158345)
+@@ -0,0 +1,174 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout
++    xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:orientation="vertical"
++    android:background="@drawable/ciel"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    >
++<androidx.appcompat.widget.Toolbar
++        android:id="@+id/maintoolbar"
++        android:layout_width="match_parent"
++        android:layout_height="56dp"/>
++<androidx.cardview.widget.CardView
++
++    android:layout_width="wrap_content"
++    android:layout_height="wrap_content"
++    app:cardElevation="8dp"
++    app:cardCornerRadius="8dp"
++    app:cardBackgroundColor="#1D2D3135"
++    android:layout_margin="16dp"
++    >
++
++    <TableRow
++        android:layout_width="match_parent"
++        android:layout_height="match_parent">
++
++        <de.hdodenhof.circleimageview.CircleImageView
++            android:id="@+id/imageId"
++            android:layout_width="50dp"
++            android:layout_height="50dp"
++            app:civ_border_width="2dp"
++            android:src="@drawable/propro"
++            android:layout_marginTop="20dp"
++            android:layout_marginLeft="20dp"
++            app:civ_border_color="#D34DFA02"
++            />
++        <TextView
++            android:id="@+id/info"
++            android:text="string/infos_sur_la_transaction"
++            android:layout_marginTop="30dp"
++            android:layout_marginLeft="30dp"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:textColor="#D3FA6502"
++            android:textSize="18sp"
++            />
++    </TableRow>
++
++
++    <TableLayout
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_marginTop="80dp"
++        android:padding="20dp"
++        android:stretchColumns="1">
++
++        <TableRow>
++
++            <TextView
++                android:id="@+id/name"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:gravity="center"
++                android:text="@string/nom"
++                android:textColor="@color/purple_700"
++                android:textSize="18sp" />
++
++            <TextView
++                android:id="@+id/ref"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text=""
++                android:textColor="#EF5350"
++                android:textSize="20sp" />
++        </TableRow>
++
++        <TableRow
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content">
++
++            <TextView
++                android:id="@+id/type"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="string/type_de_transaction"
++                android:textColor="@color/black"
++                android:textSize="18sp"
++                android:textStyle="bold" />
++
++            <TextView
++                android:id="@+id/typeTrans"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text=""
++                android:textColor="@color/black"
++                android:textSize="16sp" />
++        </TableRow>
++
++        <TableRow
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++
++            >
++
++            <TextView
++                android:id="@+id/taux"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="string/taux_de_transaction"
++                android:textColor="@color/black"
++                android:textSize="18sp"
++                android:textStyle="bold" />
++
++            <TextView
++                android:id="@+id/tauxTrans"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text=""
++                android:textColor="@color/black"
++                android:textSize="16sp" />
++        </TableRow>
++
++        <TableRow
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content">
++
++            <TextView
++                android:id="@+id/date"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="string/date_de_transaction"
++                android:textColor="@color/black"
++                android:textSize="18sp"
++                android:textStyle="bold" />
++
++            <TextView
++                android:id="@+id/dateTrans"
++
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text=""
++                android:textColor="@color/black"
++                android:textSize="16sp" />
++        </TableRow>
++
++        <TableRow
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++
++            >
++
++            <TextView
++                android:id="@+id/autretext"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="string/autres"
++                android:textColor="@color/black"
++                android:textSize="18sp"
++                android:textStyle="bold" />
++
++            <TextView
++                android:id="@+id/autres"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text=""
++
++                android:textColor="@color/black"
++                android:textSize="16sp" />
++        </TableRow>
++    </TableLayout>
++
++</androidx.cardview.widget.CardView>
++</LinearLayout>
+\ No newline at end of file
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(date 1644828308270)
++++ app/src/main/res/values/strings.xml	(date 1644828308270)
+@@ -0,0 +1,15 @@
++<resources>
++    <string name="app_name">Study</string>
++    <string name="prix_heure">Prix heure</string>
++    <string name="nom">nom</string>
++    <string-array name="planets_array">
++        <item>Mercury</item>
++        <item>Venus</item>
++        <item>Earth</item>
++        <item>Mars</item>
++        <item>Jupiter</item>
++        <item>Saturn</item>
++        <item>Uranus</item>
++        <item>Neptune</item>
++    </string-array>
++</resources>
+\ No newline at end of file
+Index: gradlew.bat
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- gradlew.bat	(date 1644690176035)
++++ gradlew.bat	(date 1644690176035)
+@@ -0,0 +1,84 @@
++@if "%DEBUG%" == "" @echo off
++@rem ##########################################################################
++@rem
++@rem  Gradle startup script for Windows
++@rem
++@rem ##########################################################################
++
++@rem Set local scope for the variables with windows NT shell
++if "%OS%"=="Windows_NT" setlocal
++
++set DIRNAME=%~dp0
++if "%DIRNAME%" == "" set DIRNAME=.
++set APP_BASE_NAME=%~n0
++set APP_HOME=%DIRNAME%
++
++@rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
++set DEFAULT_JVM_OPTS=
++
++@rem Find java.exe
++if defined JAVA_HOME goto findJavaFromJavaHome
++
++set JAVA_EXE=java.exe
++%JAVA_EXE% -version >NUL 2>&1
++if "%ERRORLEVEL%" == "0" goto init
++
++echo.
++echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
++echo.
++echo Please set the JAVA_HOME variable in your environment to match the
++echo location of your Java installation.
++
++goto fail
++
++:findJavaFromJavaHome
++set JAVA_HOME=%JAVA_HOME:"=%
++set JAVA_EXE=%JAVA_HOME%/bin/java.exe
++
++if exist "%JAVA_EXE%" goto init
++
++echo.
++echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME%
++echo.
++echo Please set the JAVA_HOME variable in your environment to match the
++echo location of your Java installation.
++
++goto fail
++
++:init
++@rem Get command-line arguments, handling Windows variants
++
++if not "%OS%" == "Windows_NT" goto win9xME_args
++
++:win9xME_args
++@rem Slurp the command line arguments.
++set CMD_LINE_ARGS=
++set _SKIP=2
++
++:win9xME_args_slurp
++if "x%~1" == "x" goto execute
++
++set CMD_LINE_ARGS=%*
++
++:execute
++@rem Setup the command line
++
++set CLASSPATH=%APP_HOME%\gradle\wrapper\gradle-wrapper.jar
++
++@rem Execute Gradle
++"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %GRADLE_OPTS% "-Dorg.gradle.appname=%APP_BASE_NAME%" -classpath "%CLASSPATH%" org.gradle.wrapper.GradleWrapperMain %CMD_LINE_ARGS%
++
++:end
++@rem End local scope for the variables with windows NT shell
++if "%ERRORLEVEL%"=="0" goto mainEnd
++
++:fail
++rem Set variable GRADLE_EXIT_CONSOLE if you need the _script_ return code instead of
++rem the _cmd.exe /c_ return code!
++if  not "" == "%GRADLE_EXIT_CONSOLE%" exit 1
++exit /b 1
++
++:mainEnd
++if "%OS%"=="Windows_NT" endlocal
++
++:omega
+Index: app/src/main/res/values/themes.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/themes.xml	(date 1644693305571)
++++ app/src/main/res/values/themes.xml	(date 1644693305571)
+@@ -0,0 +1,16 @@
++<resources xmlns:tools="http://schemas.android.com/tools">
++    <!-- Base application theme. -->
++    <style name="Theme.Study" parent="Theme.MaterialComponents.DayNight.NoActionBar">
++        <!-- Primary brand color. -->
++        <item name="colorPrimary">@color/purple_500</item>
++        <item name="colorPrimaryVariant">@color/purple_700</item>
++        <item name="colorOnPrimary">@color/white</item>
++        <!-- Secondary brand color. -->
++        <item name="colorSecondary">@color/teal_200</item>
++        <item name="colorSecondaryVariant">@color/teal_700</item>
++        <item name="colorOnSecondary">@color/black</item>
++        <!-- Status bar color. -->
++        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
++        <!-- Customize your theme here. -->
++    </style>
++</resources>
+\ No newline at end of file
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .gitignore	(date 1644690175892)
++++ .gitignore	(date 1644690175892)
+@@ -0,0 +1,15 @@
++*.iml
++.gradle
++/local.properties
++/.idea/caches
++/.idea/libraries
++/.idea/modules.xml
++/.idea/workspace.xml
++/.idea/navEditor.xml
++/.idea/assetWizardSettings.xml
++.DS_Store
++/build
++/captures
++.externalNativeBuild
++.cxx
++local.properties
+Index: app/src/main/res/layout/activity_ajouter_annonce.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_ajouter_annonce.xml	(date 1646331995614)
++++ app/src/main/res/layout/activity_ajouter_annonce.xml	(date 1646331995614)
+@@ -0,0 +1,144 @@
++<?xml version="1.0" encoding="utf-8"?>
++
++<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
++
++    xmlns:tools="http://schemas.android.com/tools"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    tools:context=".AjouterAnnonceActivity">
++
++
++<LinearLayout
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:background="@drawable/propro"
++    android:layout_height="wrap_content">
++    <androidx.appcompat.widget.Toolbar
++        android:id="@+id/maintoolbar"
++        android:layout_width="match_parent"
++        android:layout_height="56dp"/>
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:orientation="vertical"
++        android:padding="30dp"
++        android:layout_marginTop="25dp"
++        android:layout_marginLeft="10dp"
++        android:layout_marginRight="10dp"
++        android:background="#80182929">
++    <EditText
++        android:id="@+id/titre"
++        android:layout_width="match_parent"
++        android:layout_marginTop="10dp"
++        android:layout_height="40dp"
++        android:hint="Niveau scolaire"
++        android:background="@drawable/shape"
++        android:textColorHint="#80FFFFFF"
++        android:padding="6dp"
++        android:textColor="@color/white"
++        android:drawablePadding="20dp"
++        android:textSize="20sp" />
++
++    <EditText
++        android:layout_width="match_parent"
++        android:layout_height="40dp"
++        android:hint="Type d'offre"
++        android:inputType="textPassword"
++        android:textColorHint="#80FFFFFF"
++        android:layout_marginTop="10dp"
++        android:background="@drawable/shape"
++        android:padding="6dp"
++        android:textColor="@color/white"
++        android:drawablePadding="20dp"
++      />
++
++    <EditText
++        android:layout_width="match_parent"
++        android:layout_height="40dp"
++        android:hint="Matiere"
++        android:inputType="textPassword"
++        android:textColorHint="#80FFFFFF"
++        android:layout_marginTop="10dp"
++        android:background="@drawable/shape"
++        android:padding="6dp"
++        android:textColor="@color/white"
++        android:id="@+id/userName"
++        android:drawablePadding="20dp"
++        android:textSize="16sp" />
++
++    <EditText
++        android:id="@+id/Password"
++        android:layout_width="match_parent"
++        android:layout_height="40dp"
++        android:background="@drawable/shape"
++        android:hint="Periode du ../../.. Au ../../.."
++        android:layout_marginTop="10dp"
++        android:textColor="@color/white"
++        android:textColorHint="#80FFFFFF"
++        android:padding="6dp"
++        android:inputType="textPassword"
++        android:drawablePadding="20dp"
++        android:textSize="16sp" />
++    <EditText
++        android:layout_width="match_parent"
++        android:layout_height="40dp"
++        android:hint="Ville"
++        android:padding="6dp"
++        android:background="@drawable/shape"
++        android:layout_marginTop="10dp"
++        android:textColor="@color/white"
++        android:textColorHint="#80FFFFFF"
++        android:textSize="16sp" />
++    <EditText
++        android:layout_width="match_parent"
++        android:layout_height="40dp"
++        android:hint="@string/prix_heure"
++        android:padding="6dp"
++        android:background="@drawable/shape"
++        android:layout_marginTop="10dp"
++        android:textColor="@color/white"
++        android:textColorHint="#80FFFFFF"
++        android:textSize="16sp" />
++        <Spinner
++            android:id="@+id/planets_spinner"
++            android:layout_marginTop="10dp"
++            android:layout_width="match_parent"
++            android:layout_height="40dp" />
++
++<LinearLayout
++    android:layout_width="wrap_content"
++    android:layout_height="wrap_content"
++    android:layout_gravity="center"
++    android:layout_marginTop="10dp"
++    android:orientation="horizontal">
++        <com.google.android.material.button.MaterialButton
++            android:id="@+id/Effacer"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="Effacer"
++            android:textColor="@color/black"
++            android:layout_margin="10dp"
++            android:textSize="10dp"
++            android:textStyle="bold"
++            app:cornerRadius="40dp"
++            app:backgroundTint="#A9D32F2F"
++            />
++        <com.google.android.material.button.MaterialButton
++        android:id="@+id/BtnValider"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++            android:layout_margin="10dp"
++        android:text="Valider"
++        android:textColor="@color/black"
++        android:textSize="10dp"
++        android:textStyle="bold"
++
++            app:cornerRadius="40dp"
++        app:backgroundTint="#9F689F38"
++        />
++</LinearLayout>
++    </LinearLayout>
++</LinearLayout>
++
++</ScrollView>
+\ No newline at end of file
+Index: app/src/main/res/values/colors.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/colors.xml	(date 1644690178836)
++++ app/src/main/res/values/colors.xml	(date 1644690178836)
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <color name="purple_200">#FFBB86FC</color>
++    <color name="purple_500">#FF6200EE</color>
++    <color name="purple_700">#FF3700B3</color>
++    <color name="teal_200">#FF03DAC5</color>
++    <color name="teal_700">#FF018786</color>
++    <color name="black">#FF000000</color>
++    <color name="white">#FFFFFFFF</color>
++</resources>
+\ No newline at end of file
+Index: gradle/wrapper/gradle-wrapper.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>windows-1252
+===================================================================
+--- gradle/wrapper/gradle-wrapper.properties	(date 1645177894584)
++++ gradle/wrapper/gradle-wrapper.properties	(date 1645177894584)
+@@ -0,0 +1,6 @@
++#Fri Feb 18 10:51:34 WAT 2022
++distributionBase=GRADLE_USER_HOME
++distributionPath=wrapper/dists
++zipStoreBase=GRADLE_USER_HOME
++zipStorePath=wrapper/dists
++distributionUrl=https\://services.gradle.org/distributions/gradle-6.5-all.zip
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(date 1646339207384)
++++ app/build.gradle	(date 1646339207384)
+@@ -0,0 +1,65 @@
++plugins {
++    id 'com.android.application'
++    id 'com.google.gms.google-services'
++}
++
++android {
++    compileSdkVersion 31
++    buildToolsVersion "30.0.3"
++
++    defaultConfig {
++        applicationId "com.example.study"
++        minSdkVersion 19
++        targetSdkVersion 31
++        versionCode 1
++        versionName "1.0"
++        multiDexEnabled true
++        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
++    }
++
++    buildTypes {
++        release {
++            minifyEnabled false
++            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
++        }
++    }
++
++    buildFeatures{
++        viewBinding true
++    }
++    compileOptions {
++        sourceCompatibility JavaVersion.VERSION_1_8
++        targetCompatibility JavaVersion.VERSION_1_8
++    }
++}
++
++dependencies {
++
++    implementation 'androidx.appcompat:appcompat:1.4.1'
++    implementation "com.github.skydoves:powerspinner:1.1.7"
++    implementation "androidx.preference:preference-ktx:1.1.1"
++    implementation 'com.google.android.material:material:1.5.0'
++    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
++    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
++    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
++    implementation 'com.google.firebase:firebase-database:20.0.3'
++    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
++    testImplementation 'junit:junit:4.+'
++    implementation 'com.android.support:multidex:1.0.3'
++    implementation 'de.hdodenhof:circleimageview:3.1.0'
++    implementation 'com.android.volley:volley:1.2.1'
++
++    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
++    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
++
++        // Import the BoM for the Firebase platform
++        implementation platform('com.google.firebase:firebase-bom:29.1.0')
++
++        // Declare the dependency for the Firebase Authentication library
++        // When using the BoM, you don't specify versions in Firebase library dependencies
++        implementation 'com.google.firebase:firebase-auth'
++
++        // Also declare the dependency for the Google Play services library and specify its version
++        implementation 'com.google.android.gms:play-services-auth:20.1.0'
++    
++}
+\ No newline at end of file
+Index: app/proguard-rules.pro
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/proguard-rules.pro	(date 1644690176711)
++++ app/proguard-rules.pro	(date 1644690176711)
+@@ -0,0 +1,21 @@
++# Add project specific ProGuard rules here.
++# You can control the set of applied configuration files using the
++# proguardFiles setting in build.gradle.
++#
++# For more details, see
++#   http://developer.android.com/guide/developing/tools/proguard.html
++
++# If your project uses WebView with JS, uncomment the following
++# and specify the fully qualified class name to the JavaScript interface
++# class:
++#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
++#   public *;
++#}
++
++# Uncomment this to preserve the line number information for
++# debugging stack traces.
++#-keepattributes SourceFile,LineNumberTable
++
++# If you keep the line number information, uncomment this to
++# hide the original source file name.
++#-renamesourcefileattribute SourceFile
+\ No newline at end of file
+Index: app/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/.gitignore	(date 1644690176506)
++++ app/.gitignore	(date 1644690176506)
+@@ -0,0 +1,1 @@
++/build
+\ No newline at end of file
+Index: app/google-services.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/google-services.json	(date 1645209439871)
++++ app/google-services.json	(date 1645209439871)
+@@ -0,0 +1,68 @@
++{
++  "project_info": {
++    "project_number": "1032395696942",
++    "project_id": "stady-24836",
++    "storage_bucket": "stady-24836.appspot.com"
++  },
++  "client": [
++    {
++      "client_info": {
++        "mobilesdk_app_id": "1:1032395696942:android:896e48c6d8289bdf76e8bf",
++        "android_client_info": {
++          "package_name": "com.example.compleslist"
++        }
++      },
++      "oauth_client": [
++        {
++          "client_id": "1032395696942-7koeelu226knpq315f17r07j3escuack.apps.googleusercontent.com",
++          "client_type": 3
++        }
++      ],
++      "api_key": [
++        {
++          "current_key": "AIzaSyCrqRuIkXvoLw2CcyA6UOVe_sszSOFUDxQ"
++        }
++      ],
++      "services": {
++        "appinvite_service": {
++          "other_platform_oauth_client": [
++            {
++              "client_id": "1032395696942-7koeelu226knpq315f17r07j3escuack.apps.googleusercontent.com",
++              "client_type": 3
++            }
++          ]
++        }
++      }
++    },
++    {
++      "client_info": {
++        "mobilesdk_app_id": "1:1032395696942:android:6ab6c8aa1a009ec676e8bf",
++        "android_client_info": {
++          "package_name": "com.example.study"
++        }
++      },
++      "oauth_client": [
++        {
++          "client_id": "1032395696942-7koeelu226knpq315f17r07j3escuack.apps.googleusercontent.com",
++          "client_type": 3
++        }
++      ],
++      "api_key": [
++        {
++          "current_key": "AIzaSyCrqRuIkXvoLw2CcyA6UOVe_sszSOFUDxQ"
++        }
++      ],
++      "services": {
++        "appinvite_service": {
++          "other_platform_oauth_client": [
++            {
++              "client_id": "1032395696942-7koeelu226knpq315f17r07j3escuack.apps.googleusercontent.com",
++              "client_type": 3
++            }
++          ]
++        }
++      }
++    }
++  ],
++  "configuration_version": "1"
++}
+\ No newline at end of file
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/gradle.xml	(date 1644711633464)
++++ .idea/gradle.xml	(date 1644711633464)
+@@ -0,0 +1,22 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="GradleMigrationSettings" migrationVersion="1" />
++  <component name="GradleSettings">
++    <option name="linkedExternalProjectsSettings">
++      <GradleProjectSettings>
++        <option name="testRunner" value="PLATFORM" />
++        <option name="distributionType" value="DEFAULT_WRAPPED" />
++        <option name="externalProjectPath" value="$PROJECT_DIR$" />
++        <option name="gradleJvm" value="1.8" />
++        <option name="modules">
++          <set>
++            <option value="$PROJECT_DIR$" />
++            <option value="$PROJECT_DIR$/app" />
++          </set>
++        </option>
++        <option name="resolveModulePerSourceSet" value="false" />
++        <option name="useQualifiedModuleNames" value="true" />
++      </GradleProjectSettings>
++    </option>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(date 1644690222109)
++++ .idea/misc.xml	(date 1644690222109)
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++    <output url="file://$PROJECT_DIR$/build/classes" />
++  </component>
++  <component name="ProjectType">
++    <option name="id" value="Android" />
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/res/drawable/shape.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/drawable/shape.xml	(date 1644770189303)
++++ app/src/main/res/drawable/shape.xml	(date 1644770189303)
+@@ -0,0 +1,12 @@
++<?xml version="1.0" encoding="utf-8"?>
++<shape xmlns:android="http://schemas.android.com/apk/res/android"
++    android:shape="rectangle"
++    >
++    <solid
++        android:color="#4F5DFBCE"
++        />
++    <corners
++        android:bottomRightRadius="10dp"
++        android:bottomLeftRadius="10dp"/>
++
++</shape>
+\ No newline at end of file
+Index: .idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/.gitignore	(date 1644690189485)
++++ .idea/.gitignore	(date 1644690189485)
+@@ -0,0 +1,3 @@
++# Default ignored files
++/shelf/
++/workspace.xml
+Index: app/src/main/res/drawable/ic_launcher_background.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/drawable/ic_launcher_background.xml	(date 1644690178528)
++++ app/src/main/res/drawable/ic_launcher_background.xml	(date 1644690178528)
+@@ -0,0 +1,170 @@
++<?xml version="1.0" encoding="utf-8"?>
++<vector xmlns:android="http://schemas.android.com/apk/res/android"
++    android:width="108dp"
++    android:height="108dp"
++    android:viewportWidth="108"
++    android:viewportHeight="108">
++    <path
++        android:fillColor="#3DDC84"
++        android:pathData="M0,0h108v108h-108z" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M9,0L9,108"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M19,0L19,108"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M29,0L29,108"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M39,0L39,108"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M49,0L49,108"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M59,0L59,108"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M69,0L69,108"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M79,0L79,108"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M89,0L89,108"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M99,0L99,108"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M0,9L108,9"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M0,19L108,19"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M0,29L108,29"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M0,39L108,39"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M0,49L108,49"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M0,59L108,59"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M0,69L108,69"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M0,79L108,79"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M0,89L108,89"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M0,99L108,99"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M19,29L89,29"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M19,39L89,39"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M19,49L89,49"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M19,59L89,59"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M19,69L89,69"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M19,79L89,79"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M29,19L29,89"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M39,19L39,89"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M49,19L49,89"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M59,19L59,89"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M69,19L69,89"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++    <path
++        android:fillColor="#00000000"
++        android:pathData="M79,19L79,89"
++        android:strokeWidth="0.8"
++        android:strokeColor="#33FFFFFF" />
++</vector>
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/jarRepositories.xml	(date 1644690716611)
++++ .idea/jarRepositories.xml	(date 1644690716611)
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RemoteRepositoriesConfiguration">
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Maven Central repository" />
++      <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="jboss.community" />
++      <option name="name" value="JBoss Community repository" />
++      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="BintrayJCenter" />
++      <option name="name" value="BintrayJCenter" />
++      <option name="url" value="https://jcenter.bintray.com/" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="Google" />
++      <option name="name" value="Google" />
++      <option name="url" value="https://dl.google.com/dl/android/maven2/" />
++    </remote-repository>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/compiler.xml	(date 1644690222130)
++++ .idea/compiler.xml	(date 1644690222130)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="CompilerConfiguration">
++    <bytecodeTargetLevel target="1.8" />
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/res/drawable/ic_baseline.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/drawable/ic_baseline.xml	(date 1645160306934)
++++ app/src/main/res/drawable/ic_baseline.xml	(date 1645160306934)
+@@ -0,0 +1,5 @@
++<vector android:height="24dp" android:tint="#B1E0E5"
++    android:viewportHeight="24" android:viewportWidth="24"
++    android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
++    <path android:fillColor="@android:color/white" android:pathData="M15.5,14h-0.79l-0.28,-0.27C15.41,12.59 16,11.11 16,9.5 16,5.91 13.09,3 9.5,3S3,5.91 3,9.5 5.91,16 9.5,16c1.61,0 3.09,-0.59 4.23,-1.57l0.27,0.28v0.79l5,4.99L20.49,19l-4.99,-5zM9.5,14C7.01,14 5,11.99 5,9.5S7.01,5 9.5,5 14,7.01 14,9.5 11.99,14 9.5,14z"/>
++</vector>
+Index: .idea/render.experimental.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/render.experimental.xml	(date 1644696527890)
++++ .idea/render.experimental.xml	(date 1644696527890)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RenderSettings">
++    <option name="showDecorations" value="true" />
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/res/drawable-v24/ic_launcher_foreground.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/drawable-v24/ic_launcher_foreground.xml	(date 1644690178584)
++++ app/src/main/res/drawable-v24/ic_launcher_foreground.xml	(date 1644690178584)
+@@ -0,0 +1,30 @@
++<vector xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:aapt="http://schemas.android.com/aapt"
++    android:width="108dp"
++    android:height="108dp"
++    android:viewportWidth="108"
++    android:viewportHeight="108">
++    <path android:pathData="M31,63.928c0,0 6.4,-11 12.1,-13.1c7.2,-2.6 26,-1.4 26,-1.4l38.1,38.1L107,108.928l-32,-1L31,63.928z">
++        <aapt:attr name="android:fillColor">
++            <gradient
++                android:endX="85.84757"
++                android:endY="92.4963"
++                android:startX="42.9492"
++                android:startY="49.59793"
++                android:type="linear">
++                <item
++                    android:color="#44000000"
++                    android:offset="0.0" />
++                <item
++                    android:color="#00000000"
++                    android:offset="1.0" />
++            </gradient>
++        </aapt:attr>
++    </path>
++    <path
++        android:fillColor="#FFFFFF"
++        android:fillType="nonZero"
++        android:pathData="M65.3,45.828l3.8,-6.6c0.2,-0.4 0.1,-0.9 -0.3,-1.1c-0.4,-0.2 -0.9,-0.1 -1.1,0.3l-3.9,6.7c-6.3,-2.8 -13.4,-2.8 -19.7,0l-3.9,-6.7c-0.2,-0.4 -0.7,-0.5 -1.1,-0.3C38.8,38.328 38.7,38.828 38.9,39.228l3.8,6.6C36.2,49.428 31.7,56.028 31,63.928h46C76.3,56.028 71.8,49.428 65.3,45.828zM43.4,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2c-0.3,-0.7 -0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C45.3,56.528 44.5,57.328 43.4,57.328L43.4,57.328zM64.6,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2s-0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C66.5,56.528 65.6,57.328 64.6,57.328L64.6,57.328z"
++        android:strokeWidth="1"
++        android:strokeColor="#00000000" />
++</vector>
+\ No newline at end of file
+Index: app/src/main/java/com/example/study/PostGetInterfaceJson.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/study/PostGetInterfaceJson.java	(date 1646342917588)
++++ app/src/main/java/com/example/study/PostGetInterfaceJson.java	(date 1646342917588)
+@@ -0,0 +1,25 @@
++package com.example.study;
++
++import java.util.List;
++
++import retrofit2.Call;
++import retrofit2.http.Body;
++import retrofit2.http.GET;
++import retrofit2.http.POST;
++import retrofit2.http.Path;
++
++
++public interface PostGetInterfaceJson {
++
++
++
++        @POST("/post/{new}.json")
++        Call<Annonce> setAnnonce(@Path("new") String s1, @Body Annonce annonce);
++
++        @GET("/post/users.json")
++        Call<Annonce> getAnnonce();
++
++//    @GET("/post/issam.json")
++//    Call<List<Post>> getPosts();
++
++}
